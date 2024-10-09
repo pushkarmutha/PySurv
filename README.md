@@ -33,9 +33,8 @@ These will be installed automatically when you install PySurv using pip.
 First, you need to generate some synthetic time-to-event data. You can do this using the generate_time_to_event_data function, which simulates a dataset with a specified hazard ratio and censoring rate.
 ```
 import pysurv
-```
+
 # Generate synthetic survival data
-```
 data = pysurv.generate_time_to_event_data(n_samples=2000, hazard_ratio=2.0, censoring_rate=0.3)
 ```
 ### 2. Plotting Kaplan-Meier Curves
