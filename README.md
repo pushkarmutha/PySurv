@@ -14,16 +14,16 @@ PySurv is a Python package for generating and plotting Kaplan-Meier survival cur
 ## Installation
 
 You can install PySurv via PyPI:
-
+```
 pip install pysurv
-
+```
 Make sure you have the following dependencies installed:
-
+```
 - numpy
 - pandas
 - lifelines
 - matplotlib
-
+```
 These will be installed automatically when you install PySurv using pip.
 
 ## Quick Start
@@ -31,44 +31,40 @@ These will be installed automatically when you install PySurv using pip.
 ### 1. Importing and Generating Data
 
 First, you need to generate some synthetic time-to-event data. You can do this using the generate_time_to_event_data function, which simulates a dataset with a specified hazard ratio and censoring rate.
-
+```
 import pysurv
-
+```
 # Generate synthetic survival data
+```
 data = pysurv.generate_time_to_event_data(n_samples=2000, hazard_ratio=2.0, censoring_rate=0.3)
-
+```
 ### 2. Plotting Kaplan-Meier Curves
 
 Once you have the data, you can easily plot Kaplan-Meier survival curves using the plot_km_curve function:
-
+```
 pysurv.plot_km_curve(
     data, 
-    method='mantel-haenszel', 
+    method='cox', 
     title="KM Curve Example", 
     show_ci=False
 )
-
-#### Plot Customization Options:
-
-- title: Adds a title to the plot.
-- show_ci: Shows confidence intervals for KM curves (default: False).
-- method: Specifies the method for calculating hazard ratio (cox, mantel-haenszel, log-rank).
-- survival_time_point: Specify a time point to display survival percentages.
+```
 
 ### 3. Perform Mantel-Haenszel Test
 
 You can also directly perform the Mantel-Haenszel test to get a hazard ratio (HR) and p-value, along with a confidence interval:
-
+```
 chi2_stat, p_value, hr, ci_lower, ci_upper = pysurv.mantel_haenszel_test(data)
 
 print(f"Chi-Square Statistic: {chi2_stat}")
 print(f"P-Value: {p_value}")
 print(f"Hazard Ratio: {hr} (95% CI: {ci_lower} - {ci_upper})")
+```
 
 ## Full Example
 
 Here’s a more detailed example of how to use PySurv for generating data, plotting KM curves, and customizing the output:
-
+```
 import pysurv
 
 # Generate data
@@ -90,6 +86,7 @@ pysurv.plot_km_curve(
     survival_time_point=12,  # Show % survival at 12 months
     return_summary=True  # Optionally, return summary tables
 )
+```
 
 ### Output:
 
