@@ -99,10 +99,12 @@ Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and c
 - survival_time_point: Time point at which to show percentage survival (default: None).
 - return_summary: Whether to return a summary of survival and hazard ratio statistics (default: False).
 
-*Univariable Cox regression model is set to default based on [Frank Harell's advice](https://discourse.datamethods.org/t/when-is-log-rank-preferred-over-univariable-cox-regression/2344).
+*Univariable Cox regression model is set to default based on [Frank Harell's advice](https://discourse.datamethods.org/t/when-is-log-rank-preferred-over-univariable-cox-regression/2344). MatSurv uses the Mantel-Haenszel method by default to compute the hazard ratios and log-rank test to compute the p-value.
+
 ## ToDo
 - Clean up and organize the code
 - Support m-ary cases
+- Color risk tables below the KM curves
 
 If you’d like to contribute to PySurv, here’s how you can help:
 
