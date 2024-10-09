@@ -98,7 +98,7 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     colors (list): List of colors to use for the groups.
     line_styles (list): List of line styles to use for the groups.
     show_ci (bool): Whether to show confidence intervals on KM curves.
-    method (str): Method for calculating hazard ratio ('cox', 'mantel-haenszel', 'log-rank').
+    method (str): Method for calculating hazard ratio ('cox'(default), 'mantel-haenszel').
     show_inverted_hr (bool): Whether to show inverted hazard ratio.
     survival_time_point (float): Time point at which to show percentage survival.
     
@@ -199,7 +199,3 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
         print(hr_summary)
     if return_summary:
         return summary_table, hr_summary
-
-# Example usage
-data = generate_time_to_event_data(n_samples=2000, hazard_ratio=2.0, censoring_rate=0.3)
-plot_km_curve(data, method='mantel-haenszel', title="KM Curve", show_ci=False)

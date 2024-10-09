@@ -1,12 +1,13 @@
 # PySurv
 
-PySurv is a Python package for generating and plotting Kaplan-Meier survival curves. It is designed to be simple and intuitive and is inspired from MatSurv.
+PySurv is a Python package for generating and plotting Kaplan-Meier survival curves. It is designed to be simple and intuitive and is inspired from [MatSurv](https://github.com/aebergl/MatSurv).
+![KM Curve Example](images/KMCurve.png)
+![Summary Example](images/Summary.png)
 
 ## Features
 
 - Generate Kaplan-Meier (KM) survival curves
 - Calculate hazard ratios (HR) with 95% confidence intervals using Cox PH (default) or Mantel-Haenszel method
-- Add risk tables to KM plots
 - Option to show or hide confidence intervals (CI) for KM curves
 - Flexible plotting with customizable styles, colors, and labels
 

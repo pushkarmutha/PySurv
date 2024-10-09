@@ -15,4 +15,146 @@ Description-Content-Type: text/markdown
 License-File: LICENSE
 
 # PySurv
- Simple utility for plotting KM curves
+
+PySurv is a Python package for generating and plotting Kaplan-Meier survival curves. It is designed to be simple and intuitive and is inspired from [MatSurv](https://github.com/aebergl/MatSurv).
+
+## Features
+
+- Generate Kaplan-Meier (KM) survival curves
+- Calculate hazard ratios (HR) with 95% confidence intervals using Cox PH (default) or Mantel-Haenszel method
+- Add risk tables to KM plots
+- Option to show or hide confidence intervals (CI) for KM curves
+- Flexible plotting with customizable styles, colors, and labels
+
+## Installation
+
+You can install PySurv via PyPI:
+
+pip install pysurv
+
+Make sure you have the following dependencies installed:
+
+- numpy
+- pandas
+- lifelines
+- matplotlib
+
+These will be installed automatically when you install PySurv using pip.
+
+## Quick Start
+
+### 1. Importing and Generating Data
+
+First, you need to generate some synthetic time-to-event data. You can do this using the generate_time_to_event_data function, which simulates a dataset with a specified hazard ratio and censoring rate.
+
+import pysurv
+
+# Generate synthetic survival data
+data = pysurv.generate_time_to_event_data(n_samples=2000, hazard_ratio=2.0, censoring_rate=0.3)
+
+### 2. Plotting Kaplan-Meier Curves
+
+Once you have the data, you can easily plot Kaplan-Meier survival curves using the plot_km_curve function:
+
+pysurv.plot_km_curve(
+    data, 
+    method='mantel-haenszel', 
+    title="KM Curve Example", 
+    show_ci=False
+)
+
+#### Plot Customization Options:
+
+- title: Adds a title to the plot.
+- show_ci: Shows confidence intervals for KM curves (default: False).
+- method: Specifies the method for calculating hazard ratio (cox, mantel-haenszel, log-rank).
+- survival_time_point: Specify a time point to display survival percentages.
+
+### 3. Perform Mantel-Haenszel Test
+
+You can also directly perform the Mantel-Haenszel test to get a hazard ratio (HR) and p-value, along with a confidence interval:
+
+chi2_stat, p_value, hr, ci_lower, ci_upper = pysurv.mantel_haenszel_test(data)
+
+print(f"Chi-Square Statistic: {chi2_stat}")
+print(f"P-Value: {p_value}")
+print(f"Hazard Ratio: {hr} (95% CI: {ci_lower} - {ci_upper})")
+
+## Full Example
+
+Here’s a more detailed example of how to use PySurv for generating data, plotting KM curves, and customizing the output:
+
+import pysurv
+
+# Generate data
+data = pysurv.generate_time_to_event_data(n_samples=2000, hazard_ratio=2.0, censoring_rate=0.3)
+
+# Plot Kaplan-Meier curve with custom labels and colors
+pysurv.plot_km_curve(
+    data, 
+    time_col='time', 
+    event_col='event', 
+    group_col='group', 
+    group_labels=('Control Group', 'Treatment Group'),
+    title="Survival Analysis of Treatment vs Control",
+    y_label="Survival Probability (%)",
+    x_label="Time (months)",
+    colors=['blue', 'orange'], 
+    line_styles=['-', '--'],
+    show_ci=True,
+    survival_time_point=12,  # Show % survival at 12 months
+    return_summary=True  # Optionally, return summary tables
+)
+
+### Output:
+
+- A Kaplan-Meier curve for each group
+- Summary statistics, including median survival time and percentage survival at a given time point
+- Hazard ratio and p-value displayed on the plot
+
+## Function Reference
+
+### plot_km_curve
+
+Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and confidence intervals.
+
+#### Parameters:
+- data: A Pandas DataFrame containing time-to-event data.
+- time_col: Column name for the time data.
+- event_col: Column name for the event data (1 for event, 0 for censored).
+- group_col: Column name for the binary group data.
+- group_labels: Labels for the groups (default: ('Group 0', 'Group 1')).
+- title: Title for the plot.
+- y_label: Label for the y-axis.
+- x_label: Label for the x-axis.
+- colors: List of colors for the groups (default: ['b', 'r']).
+- line_styles: Line styles for the groups (default: ['-', '-']).
+- show_ci: Whether to show confidence intervals on the KM curves (default: False).
+- method: Method to calculate hazard ratio (cox(default), mantel-haenszel).
+- show_inverted_hr: Whether to show inverted hazard ratio (default: False).
+- survival_time_point: Time point at which to show percentage survival (default: None).
+- return_summary: Whether to return a summary of survival and hazard ratio statistics (default: False).
+
+#### Returns:
+- A Pandas DataFrame with summary statistics (if return_summary is set to True).
+
+## ToDo
+- Clean up and organize the code
+- Support m-ary cases
+
+If you’d like to contribute to PySurv, here’s how you can help:
+
+1. Fork the repository.
+2. Create a new branch (git checkout -b feature/your-feature).
+3. Make your changes and commit them (git commit -am 'Add some feature').
+4. Push to the branch (git push origin feature/your-feature).
+5. Create a pull request.
+
+Please make sure to update tests as appropriate and follow the style guide used in the project.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Disclaimer
+I make no guarantees for the accuracy of this code.

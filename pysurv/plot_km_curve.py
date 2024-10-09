@@ -199,7 +199,3 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
         print(hr_summary)
     if return_summary:
         return summary_table, hr_summary
-
-# Example usage
-data = generate_time_to_event_data(n_samples=2000, hazard_ratio=2.0, censoring_rate=0.3)
-plot_km_curve(data, method='mantel-haenszel', title="KM Curve", show_ci=False)
