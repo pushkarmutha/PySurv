@@ -161,7 +161,8 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
         p_value_exact = p_value.copy()
         p_value = "p < 0.0001"
     else:
-        p_value = str(p_value)
+        p_value_exact = p_value.copy()
+        p_value = str(round(p_value, 4))
 
     # Display hazard ratio, confidence interval, and p-value inside the plot near bottom left
     if hr is not None and ci_lower is not None and ci_upper is not None and p_value is not None:
