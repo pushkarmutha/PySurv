@@ -42,21 +42,21 @@ pysurv.plot_km_curve(
     time_col='time', 
     event_col='event', 
     group_col='group', 
-    group_labels=('Control Group', 'Treatment Group'),
+    group_labels=('Treatment Group', 'Control Group'),
     title="Survival Analysis of Treatment vs Control",
     y_label="Survival Probability (%)",
     x_label="Time (months)",
     colors=['blue', 'orange'], 
-    line_styles=['-', '--'],
+    line_styles=['-', '-'],
     show_ci=True,
     survival_time_point=12,  # Show % survival at 12 months
-    return_summary=True  # Optionally, return summary tables
+    return_summary=False
 )
 ```
 
 ### Output:
 
-- A Kaplan-Meier curve for each group
+- A Kaplan-Meier curve
 - Summary statistics, including median survival time and percentage survival at a given time point
 - Hazard ratio and p-value displayed on the plot
 
@@ -78,13 +78,11 @@ Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and c
 - colors: List of colors for the groups (default: ['b', 'r']).
 - line_styles: Line styles for the groups (default: ['-', '-']).
 - show_ci: Whether to show confidence intervals on the KM curves (default: False).
-- method: Method to calculate hazard ratio (cox(default), mantel-haenszel).
+- method: Method to calculate hazard ratio ('cox'(default), 'mantel-haenszel').
 - show_inverted_hr: Whether to show inverted hazard ratio (default: False).
 - survival_time_point: Time point at which to show percentage survival (default: None).
 - return_summary: Whether to return a summary of survival and hazard ratio statistics (default: False).
 
-#### Returns:
-- A Pandas DataFrame with summary statistics (if return_summary is set to True).
 
 ## ToDo
 - Clean up and organize the code
@@ -105,4 +103,4 @@ Please make sure to update tests as appropriate and follow the style guide used 
 This project is licensed under the MIT License - see the LICENSE file for details.
 
 ## Disclaimer
-I make no guarantees for the accuracy of this code.
+This code is still in the initial stages and may contain bugs. I make no guarantees for the accuracy of this code. By using this code, you agree to take full responsibility for any issues or inaccuracies that may arise.
