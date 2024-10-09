@@ -23,7 +23,7 @@ PySurv is a Python package for generating and plotting Kaplan-Meier survival cur
 ## Features
 
 - Generate Kaplan-Meier (KM) survival curves
-- Calculate hazard ratios (HR) with 95% confidence intervals using Cox PH (default) or Mantel-Haenszel method
+- Calculate hazard ratios (HR) with 95% confidence intervals using Cox PH (default)* or Mantel-Haenszel method
 - Option to show or hide confidence intervals (CI) for KM curves
 - Flexible plotting with customizable styles, colors, and labels
 - Generate synthetic time-to-event data by specifying hazard ratio and censoring rate.
@@ -94,12 +94,12 @@ Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and c
 - colors: List of colors for the groups (default: ['b', 'r']).
 - line_styles: Line styles for the groups (default: ['-', '-']).
 - show_ci: Whether to show confidence intervals on the KM curves (default: False).
-- method: Method to calculate hazard ratio ('cox'(default), 'mantel-haenszel').
+- method: Method to calculate hazard ratio ('cox'(default)*, 'mantel-haenszel').
 - show_inverted_hr: Whether to show inverted hazard ratio (default: False).
 - survival_time_point: Time point at which to show percentage survival (default: None).
 - return_summary: Whether to return a summary of survival and hazard ratio statistics (default: False).
 
-
+*Univariable Cox regression model is set to default based on [Frank Harell's advice](https://discourse.datamethods.org/t/when-is-log-rank-preferred-over-univariable-cox-regression/2344).
 ## ToDo
 - Clean up and organize the code
 - Support m-ary cases
