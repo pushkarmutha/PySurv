@@ -141,7 +141,7 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     if method == 'cox':
         # Fit Cox Proportional Hazards model to calculate hazard ratio and p-value
         cph = CoxPHFitter()
-        cph.fit(data, duration_col=time_col, event_col=event_col)
+        cph.fit(data[[group_col, time_col, event_col]], duration_col=time_col, event_col=event_col)
         hr = cph.hazard_ratios_[group_col]
         ci_lower, ci_upper = np.exp(cph.confidence_intervals_.loc[group_col])
         p_value = cph.summary.loc[group_col, 'p']
