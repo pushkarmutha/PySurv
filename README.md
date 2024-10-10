@@ -76,14 +76,16 @@ Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and c
 - title: Title for the plot.
 - y_label: Label for the y-axis.
 - x_label: Label for the x-axis.
-- colors: List of colors for the groups (default: ['b', 'r']).
-- line_styles: Line styles for the groups (default: ['-', '-']).
+- colors: List of colors for the groups. If more than two groups, please manually provide a list of colors.
+- line_styles: Line styles for the groups (default: [’-‘, ‘-‘]).
+- fontsize: Font size for all the text including title, axis labels, risk tables and hazard ratios (default: 18).
 - show_ci: Whether to show confidence intervals on the KM curves (default: False).
 - method: Method to calculate hazard ratio ('cox'(default)*, 'mantel-haenszel').
 - show_inverted_hr: Whether to show inverted hazard ratio (default: False).
 - survival_time_point: Time point at which to show percentage survival (default: None).
 - return_summary: Whether to return a summary of survival and hazard ratio statistics (default: False).
 - savepath: Complete path (including filename and extension) to save the KM curve plot (default: None).
+- **kwargs: Additional arguments to pass to matplotlib related functions.
 
 *Univariable Cox regression model is set to default based on [Frank Harell's advice](https://discourse.datamethods.org/t/when-is-log-rank-preferred-over-univariable-cox-regression/2344). MatSurv uses the Mantel-Haenszel method by default to compute the hazard ratios and log-rank test to compute the p-value.
 
