@@ -81,7 +81,7 @@ def mantel_haenszel_test(data, time_col='time', event_col='event', group_col='gr
 # Function to plot KM curves
 def plot_km_curve(data, time_col='time', event_col='event', group_col='group', 
                   group_labels=('Group 0', 'Group 1'), title=None, 
-                  y_label='Survival Probability', x_label='Time (months)', colors=None, line_styles=None, fontsize=18,
+                  y_label='Survival Probability', x_label='Time (months)', colors=None, line_styles=None, fontsize=18, linewidth=2.5,
                   show_ci=False, method='cox', show_inverted_hr=False, survival_time_point=None, return_summary=False, savepath=None, **kwargs):
     """
     Plots Kaplan-Meier survival curves and displays hazard ratio, p-value, and confidence intervals.
@@ -98,13 +98,14 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     colors (list): List of colors to use for the groups. If more than two groups, please manually provide a list of colors.
     line_styles (list): List of line styles to use for the groups.
     fontsize (int): Font size for all the text including title, axis labels, risk tables and hazard ratios (default: 18).
+    linewidth (float): Line width of KM curves (default: 2.5).
     show_ci (bool): Whether to show confidence intervals on KM curves.
     method (str): Method for calculating hazard ratio ('cox'(default), 'mantel-haenszel').
     show_inverted_hr (bool): Whether to show inverted hazard ratio.
     survival_time_point (float): Time point at which to show percentage survival.
     return_summary (bool): Whether to return a summary of survival and hazard ratio statistics (default: False).
     savepath (str): Complete path (including filename and extension) to save the KM curve plot (default: None). 
-    **kwargs: Additional arguments to pass to matplotlib related functions.
+    **kwargs: Additional matplotlib arguments to pass for plotting KM curves.
     Returns:
     summary_table: If return_summary=True, Pandas dataframe with median survival and % patients alive at specified timepoint
     hr_summary: If return_summary=True, Pandas dataframe with hazard ratio, confidence interval, p-value and test statistic
@@ -127,7 +128,7 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
         kmf = KaplanMeierFitter()
         group_data = data[data[group_col] == group]
         kmf.fit(group_data[time_col], event_observed=group_data[event_col], label=group_labels[i])
-        kmf.plot_survival_function(show_censors=True, censor_styles={"marker": "|", "ms":6}, ci_show=show_ci, ci_alpha=0.15, color=colors[i], linestyle=line_styles[i], ax=ax, fontsize=fontsize, **kwargs)
+        kmf.plot_survival_function(show_censors=True, censor_styles={"marker": "|", "ms":6}, ci_show=show_ci, ci_alpha=0.15, color=colors[i], linestyle=line_styles[i], ax=ax, fontsize=fontsize, linewidth=linewidth, **kwargs)
         kmfs.append(kmf)
 
         # Record median survival and percentage survival at a specific time point if provided
@@ -169,16 +170,16 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     if hr is not None and ci_lower is not None and ci_upper is not None and p_value is not None:
         plt.text(0.05, 0.05, f"HR: {hr:.2f} ({ci_lower:.2f}-{ci_upper:.2f})\np-value: {p_value}",
                  horizontalalignment='left', verticalalignment='bottom', transform=ax.transAxes, 
-                 bbox=dict(facecolor='white', alpha=0.6, edgecolor='none'), fontsize=fontsize, **kwargs)
+                 bbox=dict(facecolor='white', alpha=0.6, edgecolor='none'), fontsize=fontsize)
     remove_spines(ax,['top', 'right'])
-    plt.xlabel(x_label, fontsize=fontsize, **kwargs)
-    plt.ylabel(y_label, fontsize=fontsize, **kwargs)
+    plt.xlabel(x_label, fontsize=fontsize)
+    plt.ylabel(y_label, fontsize=fontsize)
     if title:
-        plt.title('$\\bf{'+title+'}$', fontsize=fontsize, **kwargs)
+        plt.title('$\\bf{'+title+'}$', fontsize=fontsize)
     plt.grid(False)
 
-    plt.legend()
-    add_at_risk_counts(*kmfs, ax=ax, fontsize=fontsize, **kwargs)
+    plt.legend(fontsize=fontsize)
+    add_at_risk_counts(*kmfs, ax=ax, fontsize=fontsize)
     plt.subplots_adjust(bottom=0.3)
     plt.tight_layout()
     if savepath is not None:
