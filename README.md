@@ -50,7 +50,8 @@ pysurv.plot_km_curve(
     line_styles=['-', '-'],
     show_ci=True,
     survival_time_point=12,  # Show % survival at 12 months
-    return_summary=False
+    return_summary=False,
+    savepath='./KMCurve.svg'
 )
 ```
 
@@ -82,6 +83,7 @@ Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and c
 - show_inverted_hr: Whether to show inverted hazard ratio (default: False).
 - survival_time_point: Time point at which to show percentage survival (default: None).
 - return_summary: Whether to return a summary of survival and hazard ratio statistics (default: False).
+- savepath: Complete path (including filename and extension) to save the KM curve plot (default: None).
 
 *Univariable Cox regression model is set to default based on [Frank Harell's advice](https://discourse.datamethods.org/t/when-is-log-rank-preferred-over-univariable-cox-regression/2344). MatSurv uses the Mantel-Haenszel method by default to compute the hazard ratios and log-rank test to compute the p-value.
 

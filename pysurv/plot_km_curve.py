@@ -82,7 +82,7 @@ def mantel_haenszel_test(data, time_col='time', event_col='event', group_col='gr
 def plot_km_curve(data, time_col='time', event_col='event', group_col='group', 
                   group_labels=('Group 0', 'Group 1'), title=None, 
                   y_label='Survival Probability', x_label='Time (months)', colors=None, line_styles=None, 
-                  show_ci=False, method='cox', show_inverted_hr=False, survival_time_point=None, return_summary=False):
+                  show_ci=False, method='cox', show_inverted_hr=False, survival_time_point=None, return_summary=False, savepath=None):
     """
     Plots Kaplan-Meier survival curves and displays hazard ratio, p-value, and confidence intervals.
     
@@ -173,12 +173,14 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     plt.xlabel(x_label)
     plt.ylabel(y_label)
     if title:
-        plt.title(title)
+        plt.title('$\\bf{'+title+'}$')
     plt.grid(False)
 
     plt.legend()
     add_at_risk_counts(*kmfs, ax=ax)
     plt.subplots_adjust(bottom=0.3)
+    if savepath is not None:
+        plt.savefig(savepath)
     plt.show()
     
     # Print summary table
