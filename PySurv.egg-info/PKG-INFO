@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
 Name: PySurv
-Version: 0.1.5
+Version: 0.1.51
 Summary: A Python tool for generating and plotting Kaplan-Meier survival curves.
 Home-page: https://github.com/pushkarmutha/PySurv
 Author: Pushkar Mutha

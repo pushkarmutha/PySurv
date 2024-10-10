@@ -128,7 +128,7 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
         kmf = KaplanMeierFitter()
         group_data = data[data[group_col] == group]
         kmf.fit(group_data[time_col], event_observed=group_data[event_col], label=group_labels[i])
-        kmf.plot_survival_function(show_censors=True, censor_styles={"marker": "|", "ms":6}, ci_show=show_ci, ci_alpha=0.15, color=colors[i], linestyle=line_styles[i], ax=ax, fontsize=fontsize, linewidth=linewidth, **kwargs)
+        kmf.plot_survival_function(show_censors=True, censor_styles={"marker": "|", "ms":8}, ci_show=show_ci, ci_alpha=0.15, color=colors[i], linestyle=line_styles[i], ax=ax, fontsize=fontsize, linewidth=linewidth, **kwargs)
         kmfs.append(kmf)
 
         # Record median survival and percentage survival at a specific time point if provided
@@ -168,14 +168,14 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
 
     # Display hazard ratio, confidence interval, and p-value inside the plot near bottom left
     if hr is not None and ci_lower is not None and ci_upper is not None and p_value is not None:
-        plt.text(0.05, 0.05, f"HR: {hr:.2f} ({ci_lower:.2f}-{ci_upper:.2f})\np-value: {p_value}",
+        plt.text(0.0125, 0.025, f"HR: {hr:.2f} ({ci_lower:.2f}-{ci_upper:.2f})\np-value: {p_value}",
                  horizontalalignment='left', verticalalignment='bottom', transform=ax.transAxes, 
-                 bbox=dict(facecolor='white', alpha=0.6, edgecolor='none'), fontsize=fontsize)
+                 bbox=dict(facecolor='white', alpha=0.3, edgecolor='none'), fontsize=fontsize-2)
     remove_spines(ax,['top', 'right'])
     plt.xlabel(x_label, fontsize=fontsize)
     plt.ylabel(y_label, fontsize=fontsize)
     if title:
-        plt.title('$\\bf{'+title+'}$', fontsize=fontsize)
+        plt.title(r'$\bf{'+str(title).replace(' ', r'\ ')+'}$', fontsize=fontsize)
     plt.grid(False)
 
     plt.legend(fontsize=fontsize)
