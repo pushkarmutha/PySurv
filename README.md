@@ -74,13 +74,13 @@ Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and c
 - time_col: Column name for the time data.
 - event_col: Column name for the event data (1 for event, 0 for censored).
 - group_col: Column name for the binary group data.
-- group_labels: Labels for the groups (default: ('Group 0', 'Group 1')).
-- title: Title for the plot.
-- y_label: Label for the y-axis.
-- x_label: Label for the x-axis.
-- colors: List of colors for the groups. If more than two groups, please manually provide a list of colors.
-- line_styles: Line styles for the groups (default: [’-‘, ‘-‘]).
-- fontsize: Font size for all the text including title, axis labels, risk tables and hazard ratios (default: 18).
+- group_labels: Labels for the groups (default: None).
+- title: Title for the plot (default: None).
+- y_label: Label for the y-axis (default: 'Survival Probability').
+- x_label: Label for the x-axis (default: 'Time (months)').
+- colors: List of colors for the groups (default: ['r', 'b']). If more than two groups, please manually provide a list of colors.
+- line_styles: Line styles for the groups (default: ’-‘).
+- fontsize: Font size for text on KM curve including title, axis labels, and risk tables (default: 18).
 - linewidth: Line width of KM curves (default: 2.5).
 - show_ci: Whether to show confidence intervals on the KM curves (default: False).
 - method: Method to calculate hazard ratio ('cox'(default)*, 'mantel-haenszel').

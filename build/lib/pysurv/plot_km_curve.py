@@ -71,7 +71,7 @@ def mantel_haenszel_test(data, time_col='time', event_col='event', group_col='gr
     results = logrank_test(group_0_data['time'], group_1_data['time'], group_0_data['event'], group_1_data['event'])
     chi2_stat, p_value = results.test_statistic, results.p_value
     # Calculate hazard ratio and 95% confidence interval for Mantel-Haenszel
-    hr_mh = (np.sum(mf[:, 1]) / np.sum(ef[:, 1])) / (np.sum(mf[:, 0]) / np.sum(ef[:, 0]))
+    hr_mh = (np.sum(mf[:, 0]) / np.sum(ef[:, 0])) / (np.sum(mf[:, 1]) / np.sum(ef[:, 1]))
     log_hr_se = np.sqrt(1 / np.sum(ef[:, 0]) + 1 / np.sum(ef[:, 1]))
     ci_lower = np.exp(np.log(hr_mh) - 1.96 * log_hr_se)
     ci_upper = np.exp(np.log(hr_mh) + 1.96 * log_hr_se)
@@ -80,8 +80,8 @@ def mantel_haenszel_test(data, time_col='time', event_col='event', group_col='gr
 
 # Function to plot KM curves
 def plot_km_curve(data, time_col='time', event_col='event', group_col='group', 
-                  group_labels=('Group 0', 'Group 1'), title=None, 
-                  y_label='Survival Probability', x_label='Time (months)', colors=None, line_styles=None, fontsize=18, linewidth=2.5,
+                  group_labels=None, title=None, 
+                  y_label='Survival Probability', x_label='Time (months)', colors=['r', 'b'], line_styles=None, fontsize=18, linewidth=2.5,
                   show_ci=False, method='cox', show_inverted_hr=False, survival_time_point=None, return_summary=False, savepath=None, **kwargs):
     """
     Plots Kaplan-Meier survival curves and displays hazard ratio, p-value, and confidence intervals.
@@ -91,33 +91,36 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     time_col (str): Column name for time data.
     event_col (str): Column name for event data (1 for event occurred, 0 for censored).
     group_col (str): Column name for group data.
-    group_labels (tuple): Labels for the two groups.
-    title (str): Title for the plot.
-    y_label (str): Label for the y-axis.
-    x_label (str): Label for the x-axis.
-    colors (list): List of colors to use for the groups. If more than two groups, please manually provide a list of colors.
-    line_styles (list): List of line styles to use for the groups.
-    fontsize (int): Font size for all the text including title, axis labels, risk tables and hazard ratios (default: 18).
+    group_labels (tuple): Labels for the two groups (default: None).
+    title (str): Title for the plot (default: None).
+    y_label (str): Label for the y-axis (default: 'Survival Probability').
+    x_label (str): Label for the x-axis (default: 'Time (months)').
+    colors (list): List of colors to use for the groups (default: ['r', 'b']). If more than two groups, please manually provide a list of colors.
+    line_styles (list): List of line styles to use for the groups (default: '-').
+    fontsize (int): Font size for text on KM curve including title, axis labels, and risk tables (default: 18).
     linewidth (float): Line width of KM curves (default: 2.5).
-    show_ci (bool): Whether to show confidence intervals on KM curves.
+    show_ci (bool): Whether to show confidence intervals on KM curves (default: False).
     method (str): Method for calculating hazard ratio ('cox'(default), 'mantel-haenszel').
-    show_inverted_hr (bool): Whether to show inverted hazard ratio.
-    survival_time_point (float): Time point at which to show percentage survival.
+    show_inverted_hr (bool): Whether to show inverted hazard ratio (default: False).
+    survival_time_point (float): Time point at which to show percentage survival (default: None).
     return_summary (bool): Whether to return a summary of survival and hazard ratio statistics (default: False).
     savepath (str): Complete path (including filename and extension) to save the KM curve plot (default: None). 
     **kwargs: Additional matplotlib arguments to pass for plotting KM curves.
     Returns:
-    summary_table: If return_summary=True, Pandas dataframe with median survival and % patients alive at specified timepoint
+    survival_summary: If return_summary=True, Pandas dataframe with median survival and % patients alive at specified timepoint
     hr_summary: If return_summary=True, Pandas dataframe with hazard ratio, confidence interval, p-value and test statistic
     """
     if  data[group_col].nunique()!=2:
         print('Please explicitly provide a list of "colors"')
-    if colors is None:
-        colors = ['b', 'r']
-    if line_styles is None:
-        line_styles = ['-', '-']
         
-    groups = data[group_col].unique()
+    groups = sorted(data[group_col].unique())
+    
+    if line_styles is None:
+        line_styles = ['-'] * len(groups)
+
+    if group_labels is None:
+        group_labels = groups
+
     plt.figure(figsize=(12, 8))
     
     ax = plt.subplot(111)
@@ -128,7 +131,7 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
         kmf = KaplanMeierFitter()
         group_data = data[data[group_col] == group]
         kmf.fit(group_data[time_col], event_observed=group_data[event_col], label=group_labels[i])
-        kmf.plot_survival_function(show_censors=True, censor_styles={"marker": "|", "ms":8}, ci_show=show_ci, ci_alpha=0.15, color=colors[i], linestyle=line_styles[i], ax=ax, fontsize=fontsize, linewidth=linewidth, **kwargs)
+        kmf.plot_survival_function(show_censors=True, censor_styles={"marker": "|", "ms":10, "mew": 1.25}, ci_show=show_ci, ci_alpha=0.15, color=colors[i], linestyle=line_styles[i], ax=ax, fontsize=fontsize, linewidth=linewidth, **kwargs)
         kmfs.append(kmf)
 
         # Record median survival and percentage survival at a specific time point if provided
@@ -188,8 +191,8 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     
     # Print summary table
     print("\nSummary Table:")
-    summary_table = pd.DataFrame(survival_percentages, columns=['Group', 'Median Survival Time', f'% Alive at {survival_time_point}'])
-    print(summary_table)
+    survival_summary = pd.DataFrame(survival_percentages, columns=['Group', 'Median Survival Time', f'% Alive at {survival_time_point}'])
+    print(survival_summary)
 
     # Print Hazard Ratio Summary
     if hr is not None:
@@ -204,4 +207,4 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
         })
         print(hr_summary)
     if return_summary:
-        return summary_table, hr_summary
+        return survival_summary, hr_summary
