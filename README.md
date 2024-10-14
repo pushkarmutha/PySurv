@@ -1,7 +1,7 @@
 # PySurv
 
 PySurv is a Python package for generating and plotting Kaplan-Meier survival curves. It is designed to be simple and intuitive and is inspired from [MatSurv](https://github.com/aebergl/MatSurv).
-![KM Curve Example](images/KMCurve.png)
+![KM Curve Example](images/KMCurve.svg)
 ![Summary Example](images/Summary.png)
 
 ## Features
