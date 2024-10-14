@@ -121,7 +121,7 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     if group_labels is None:
         group_labels = groups
 
-    plt.figure(figsize=(12, 8))
+    plt.figure(figsize=(12, 8), facecolor='white')
     
     ax = plt.subplot(111)
     survival_percentages = []
@@ -190,7 +190,7 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     plt.subplots_adjust(bottom=0.3)
     plt.tight_layout()
     if savepath is not None:
-        plt.savefig(savepath)
+        plt.savefig(savepath, facecolor='white')
     plt.show()
     
     # Print summary table
