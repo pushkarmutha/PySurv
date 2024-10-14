@@ -93,7 +93,7 @@ pysurv.plot_km_curve(
     fontsize=18,
     linewidth=2.5,
     show_ci=True,
-    survival_time_point=12,  # Show % survival at 12 months
+    survival_time_points=[12, 24],  # Show % survival at 12 and 24 months
     return_summary=False,
     savepath='./KMCurve.svg'
 )
@@ -130,7 +130,7 @@ pysurv.plot_km_curve(
   <li>show_ci: Whether to show confidence intervals on the KM curves (default: False).</li>
   <li>method: Method to calculate hazard ratio (‘cox’(default)*, ‘mantel-haenszel’).</li>
   <li>show_inverted_hr: Whether to show inverted hazard ratio (default: False).</li>
-  <li>survival_time_point: Time point at which to show percentage survival (default: None).</li>
+  <li>survival_time_points (list): One or more time point(s) at which to estimate percentage survival (default: None).</li>
   <li>return_summary: Whether to return a summary of survival and hazard ratio statistics (default: False).</li>
   <li>savepath: Complete path (including filename and extension) to save the KM curve plot (default: None).</li>
   <li>**kwargs: Additional matplotlib arguments to pass for plotting KM curves.</li>

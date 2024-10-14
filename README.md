@@ -51,7 +51,7 @@ pysurv.plot_km_curve(
     fontsize=18,
     linewidth=2.5,
     show_ci=True,
-    survival_time_point=12,  # Show % survival at 12 months
+    survival_time_points=[12, 24],  # Show % survival at 12 and 24 months
     return_summary=False,
     savepath='./KMCurve.svg'
 )
@@ -85,7 +85,7 @@ Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and c
 - show_ci: Whether to show confidence intervals on the KM curves (default: False).
 - method: Method to calculate hazard ratio ('cox'(default)*, 'mantel-haenszel').
 - show_inverted_hr: Whether to show inverted hazard ratio (default: False).
-- survival_time_point: Time point at which to show percentage survival (default: None).
+- survival_time_points (list): One or more time point(s) at which to estimate percentage survival (default: None).
 - return_summary: Whether to return a summary of survival and hazard ratio statistics (default: False).
 - savepath: Complete path (including filename and extension) to save the KM curve plot (default: None).
 - **kwargs: Additional matplotlib arguments to pass for plotting KM curves.
