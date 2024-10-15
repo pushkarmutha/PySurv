@@ -47,7 +47,7 @@ pysurv.plot_km_curve(
     title="Survival Analysis of Treatment vs Control",
     y_label="Survival Probability (%)",
     x_label="Time (months)",
-    colors=['blue', 'orange'], 
+    colors=['orange', 'blue'], 
     show_ci=True,
     survival_time_points=[12, 24],  # Show % survival at 12 and 24 months
     return_summary=False,
