@@ -1,13 +1,14 @@
 # PySurv
 
 PySurv is a Python package for generating and plotting Kaplan-Meier survival curves. It is designed to be simple and intuitive and is inspired from [MatSurv](https://github.com/aebergl/MatSurv).
+
 ![KM Curve Example](images/KMCurve.svg)
 ![Summary Example](images/Summary.png)
 
 ## Features
 
 - Generate Kaplan-Meier (KM) survival curves
-- Calculate hazard ratios (HR) with 95% confidence intervals using Cox PH (default)* or Mantel-Haenszel method
+- Calculate hazard ratios (HR) with 95% confidence intervals using Cox PH method
 - Option to show or hide confidence intervals (CI) for KM curves
 - Flexible plotting with customizable styles, colors, and labels
 - Generate synthetic time-to-event data by specifying hazard ratio and censoring rate.
@@ -42,15 +43,11 @@ pysurv.plot_km_curve(
     time_col='time', 
     event_col='event', 
     group_col='group', 
-    method='cox', # Use 'mantel-haenszel' for log-rank test and consistency with MatSurv
     group_labels=('Control Group', 'Treatment Group'),
     title="Survival Analysis of Treatment vs Control",
     y_label="Survival Probability (%)",
     x_label="Time (months)",
     colors=['blue', 'orange'], 
-    line_styles=['-', '-'],
-    fontsize=18,
-    linewidth=2.5,
     show_ci=True,
     survival_time_points=[12, 24],  # Show % survival at 12 and 24 months
     return_summary=False,
@@ -61,7 +58,7 @@ pysurv.plot_km_curve(
 ### Output:
 
 - A Kaplan-Meier curve
-- Summary statistics, including median survival time and percentage survival at a given time point
+- Summary statistics, including median survival time and percentage survival at given time point(s)
 - Hazard ratio and p-value displayed on the plot
 
 ## Function Reference
@@ -84,14 +81,17 @@ Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and c
 - fontsize: Font size for text on KM curve including title, axis labels, and risk tables (default: 18).
 - linewidth: Line width of KM curves (default: 2.5).
 - show_ci: Whether to show confidence intervals on the KM curves (default: False).
-- method: Method to calculate hazard ratio ('cox'(default)*, 'mantel-haenszel').
 - show_inverted_hr: Whether to show inverted hazard ratio (default: False).
 - survival_time_points (list): One or more time point(s) at which to estimate percentage survival (default: None).
 - return_summary: Whether to return a summary of survival and hazard ratio statistics (default: False).
 - savepath: Complete path (including filename and extension) to save the KM curve plot (default: None).
 - **kwargs: Additional matplotlib arguments to pass for plotting KM curves.
 
-*Univariable Cox regression model is set to default based on [Frank Harell's advice](https://discourse.datamethods.org/t/when-is-log-rank-preferred-over-univariable-cox-regression/2344). MatSurv uses the Mantel-Haenszel method by default to compute the hazard ratios and log-rank test to compute the p-value.
+#### \*Note:
+- PySurv uses a univariable Cox regression model on the 'group_col' variable to compute hazard ratios and p-values. 
+- MatSurv deafaults to the 'Mantel-Haenszel' (MH) and 'log rank' method. 
+- Under the proportional hazards assumption, Cox regression is equivalent, if not better, to the MH/log-rank method.
+- For more information, see [this](https://www.fharrell.com/post/logrank/) and [this](https://discourse.datamethods.org/t/when-is-log-rank-preferred-over-univariable-cox-regression/2344). 
 
 ## ToDo
 - Clean up and organize the code

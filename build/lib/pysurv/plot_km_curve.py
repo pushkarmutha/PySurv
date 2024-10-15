@@ -2,7 +2,6 @@ import numpy as np
 import pandas as pd
 from lifelines import KaplanMeierFitter, CoxPHFitter
 import matplotlib.pyplot as plt
-from lifelines.statistics import logrank_test
 from lifelines.plotting import add_at_risk_counts, remove_spines
 
 # Function to generate random time-to-event data with censoring
@@ -37,52 +36,11 @@ def generate_time_to_event_data(n_samples=200, hazard_ratio=2.0, censoring_rate=
     
     return data
 
-# Function to perform log-rank and Mantel-Haenszel test
-def mantel_haenszel_test(data, time_col='time', event_col='event', group_col='group'):
-    groups = data[group_col].unique()
-    assert len(groups) == 2, "This implementation only supports two groups"
-    
-    # Extract data for each group
-    group_0_data = data[data[group_col] == groups[0]].sort_values(by=time_col)
-    group_1_data = data[data[group_col] == groups[1]].sort_values(by=time_col)
-    
-    # Get unique event times from both groups
-    unique_times = np.unique(data[time_col])
-    n_times = len(unique_times)
-    
-    # Allocate matrices for calculations
-    mf = np.zeros((n_times, 2))  # Observed failures
-    nf = np.zeros((n_times, 2))  # Number at risk
-    ef = np.zeros((n_times, 2))  # Expected number of failures
-    
-    # Calculate number at risk and observed failures for each group
-    for i, t in enumerate(unique_times):
-        nf[i, 0] = np.sum(group_0_data[time_col] >= t)
-        nf[i, 1] = np.sum(group_1_data[time_col] >= t)
-        mf[i, 0] = np.sum((group_0_data[time_col] == t) & (group_0_data[event_col]))
-        mf[i, 1] = np.sum((group_1_data[time_col] == t) & (group_1_data[event_col]))
-
-    # Calculate expected number of failures
-    nf_sum = np.sum(nf, axis=1)
-    mf_sum = np.sum(mf, axis=1)
-    for i in range(2):
-        ef[:, i] = (nf[:, i] / nf_sum) * mf_sum
-    
-    results = logrank_test(group_0_data['time'], group_1_data['time'], group_0_data['event'], group_1_data['event'])
-    chi2_stat, p_value = results.test_statistic, results.p_value
-    # Calculate hazard ratio and 95% confidence interval for Mantel-Haenszel
-    hr_mh = (np.sum(mf[:, 1]) / np.sum(ef[:, 1])) / (np.sum(mf[:, 0]) / np.sum(ef[:, 0]))
-    log_hr_se = np.sqrt(1 / np.sum(ef[:, 0]) + 1 / np.sum(ef[:, 1]))
-    ci_lower = np.exp(np.log(hr_mh) - 1.96 * log_hr_se)
-    ci_upper = np.exp(np.log(hr_mh) + 1.96 * log_hr_se)
-    
-    return chi2_stat, p_value, hr_mh, ci_lower, ci_upper
-
 # Function to plot KM curves
 def plot_km_curve(data, time_col='time', event_col='event', group_col='group', 
                   group_labels=None, title=None, 
                   y_label='Survival Probability', x_label='Time (months)', colors=['r', 'b'], line_styles=None, fontsize=18, linewidth=2.5,
-                  show_ci=False, method='cox', show_inverted_hr=False, survival_time_points=None, return_summary=False, savepath=None, **kwargs):
+                  show_ci=False, show_inverted_hr=False, survival_time_points=None, return_summary=False, savepath=None, **kwargs):
     """
     Plots Kaplan-Meier survival curves and displays hazard ratio, p-value, and confidence intervals.
     
@@ -100,7 +58,6 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     fontsize (int): Font size for text on KM curve including title, axis labels, and risk tables (default: 18).
     linewidth (float): Line width of KM curves (default: 2.5).
     show_ci (bool): Whether to show confidence intervals on KM curves (default: False).
-    method (str): Method for calculating hazard ratio ('cox'(default), 'mantel-haenszel').
     show_inverted_hr (bool): Whether to show inverted hazard ratio (default: False).
     survival_time_points (list): One or more time point(s) at which to estimate percentage survival (default: None).
     return_summary (bool): Whether to return a summary of survival and hazard ratio statistics (default: False).
@@ -147,17 +104,13 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     ci_upper = None
     p_value = None
     
-    if method == 'cox':
-        # Fit Cox Proportional Hazards model to calculate hazard ratio and p-value
-        cph = CoxPHFitter()
-        cph.fit(data[[group_col, time_col, event_col]], duration_col=time_col, event_col=event_col)
-        hr = cph.hazard_ratios_[group_col]
-        ci_lower, ci_upper = np.exp(cph.confidence_intervals_.loc[group_col])
-        p_value = cph.summary.loc[group_col, 'p']
-        test_statistic = cph.summary.loc[group_col, 'z']
-    elif method == 'mantel-haenszel':
-        # Perform log-rank or Mantel-Haenszel test
-        test_statistic, p_value, hr, ci_lower, ci_upper = mantel_haenszel_test(data, time_col, event_col, group_col)
+    # Fit Cox Proportional Hazards model to calculate hazard ratio and p-value
+    cph = CoxPHFitter()
+    cph.fit(data[[group_col, time_col, event_col]], duration_col=time_col, event_col=event_col)
+    hr = cph.hazard_ratios_[group_col]
+    ci_lower, ci_upper = np.exp(cph.confidence_intervals_.loc[group_col])
+    p_value = cph.summary.loc[group_col, 'p']
+    test_statistic = cph.summary.loc[group_col, 'z']
 
     if show_inverted_hr and hr is not None:
         hr = 1 / hr
@@ -206,7 +159,7 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     # Print Hazard Ratio Summary
     if hr is not None:
         print("\nHazard Ratio Summary:")
-        print(f"Hazard ratio computed using {method} method")
+        print(f"Hazard ratio computed using Cox univariable regression on {group_col} variable")
         hr_summary = pd.DataFrame({
             'Hazard Ratio': [hr],
             '95% CI Lower': [ci_lower],
@@ -215,5 +168,7 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
             'Test Statistic': [test_statistic]
         })
         print(hr_summary.round({"Hazard Ratio":2, "95% CI Lower":2, "95% CI Upper":2, "Test Statistic":2}).to_string())
+        print("\n\nUnder the proportional hazards assumption, Cox regression is equivalent to log-rank test. See https://www.fharrell.com/post/logrank/ for more info.")
+
     if return_summary:
         return survival_summary, hr_summary
