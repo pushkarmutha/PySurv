@@ -97,7 +97,10 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
             survival_percentages.append((group_labels[i], median_survival))
         else:
             survival_at_tps = np.array(kmf.predict(survival_time_points))*100
-            survival_percentages.append((group_labels[i], median_survival, *survival_at_tps))
+            if len(survival_time_points)==1:
+                survival_percentages.append((group_labels[i], median_survival, survival_at_tps))
+            else:
+                survival_percentages.append((group_labels[i], median_survival, *survival_at_tps))
 
     hr = None
     ci_lower = None
