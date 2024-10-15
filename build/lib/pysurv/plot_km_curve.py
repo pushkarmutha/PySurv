@@ -71,7 +71,7 @@ def mantel_haenszel_test(data, time_col='time', event_col='event', group_col='gr
     results = logrank_test(group_0_data['time'], group_1_data['time'], group_0_data['event'], group_1_data['event'])
     chi2_stat, p_value = results.test_statistic, results.p_value
     # Calculate hazard ratio and 95% confidence interval for Mantel-Haenszel
-    hr_mh = (np.sum(mf[:, 0]) / np.sum(ef[:, 0])) / (np.sum(mf[:, 1]) / np.sum(ef[:, 1]))
+    hr_mh = (np.sum(mf[:, 1]) / np.sum(ef[:, 1])) / (np.sum(mf[:, 0]) / np.sum(ef[:, 0]))
     log_hr_se = np.sqrt(1 / np.sum(ef[:, 0]) + 1 / np.sum(ef[:, 1]))
     ci_lower = np.exp(np.log(hr_mh) - 1.96 * log_hr_se)
     ci_upper = np.exp(np.log(hr_mh) + 1.96 * log_hr_se)

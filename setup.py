@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="PySurv",
-    version="0.2.1",
+    version="0.2.2",
     author="Pushkar Mutha",
     author_email="pushkar.mutha@outlook.com",
     description="A Python tool for generating and plotting Kaplan-Meier survival curves.",

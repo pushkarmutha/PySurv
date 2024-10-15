@@ -34,7 +34,7 @@ Here’s a detailed example of how to use PySurv for generating data, plotting K
 import pysurv
 
 # Generate synthetic data
-data = pysurv.generate_time_to_event_data(n_samples=2000, hazard_ratio=2.0, censoring_rate=0.3)
+data = pysurv.generate_time_to_event_data(n_samples=2000, hazard_ratio=0.5, censoring_rate=0.3)
 
 # Plot Kaplan-Meier curve with custom labels and colors
 pysurv.plot_km_curve(
@@ -42,7 +42,8 @@ pysurv.plot_km_curve(
     time_col='time', 
     event_col='event', 
     group_col='group', 
-    group_labels=('Treatment Group', 'Control Group'),
+    method='cox', # Use 'mantel-haenszel' for log-rank test and consistency with MatSurv
+    group_labels=('Control Group', 'Treatment Group'),
     title="Survival Analysis of Treatment vs Control",
     y_label="Survival Probability (%)",
     x_label="Time (months)",
