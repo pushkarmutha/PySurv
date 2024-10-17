@@ -1,6 +1,6 @@
 # PySurv
 
-PySurv is a Python package for generating and plotting Kaplan-Meier survival curves. It is designed to be simple and intuitive and is inspired from [MatSurv](https://github.com/aebergl/MatSurv).
+[PySurv](https://github.com/pushkarmutha/PySurv) is a Python package for generating and plotting Kaplan-Meier survival curves. It is designed to be simple and intuitive and is inspired from [MatSurv](https://github.com/aebergl/MatSurv).
 
 ![KM Curve Example](images/KMCurve.svg)
 ![Summary Example](images/Summary.png)
@@ -19,14 +19,6 @@ You can install PySurv via PyPI:
 ```
 pip install pysurv
 ```
-Make sure you have the following dependencies installed:
-```
-- numpy
-- pandas
-- lifelines
-- matplotlib
-```
-These will be installed automatically when you install PySurv using pip.
 
 ## Usage
 
@@ -68,24 +60,24 @@ pysurv.plot_km_curve(
 Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and confidence intervals.
 
 #### Parameters:
-- data: A Pandas DataFrame containing time-to-event data.
-- time_col: Column name for the time data.
-- event_col: Column name for the event data (1 for event, 0 for censored).
-- group_col: Column name for the binary group data.
-- group_labels: Labels for the groups (default: None).
-- title: Title for the plot (default: None).
-- y_label: Label for the y-axis (default: 'Survival Probability').
-- x_label: Label for the x-axis (default: 'Time (months)').
-- colors: List of colors for the groups (default: ['r', 'b']). If more than two groups, please manually provide a list of colors.
-- line_styles: Line styles for the groups (default: ’-‘).
-- fontsize: Font size for text on KM curve including title, axis labels, and risk tables (default: 18).
-- linewidth: Line width of KM curves (default: 2.5).
-- show_ci: Whether to show confidence intervals on the KM curves (default: False).
-- show_inverted_hr: Whether to show inverted hazard ratio (default: False).
-- survival_time_points (list): One or more time point(s) at which to estimate percentage survival (default: None).
-- return_summary: Whether to return a summary of survival and hazard ratio statistics (default: False).
-- savepath: Complete path (including filename and extension) to save the KM curve plot (default: None).
-- **kwargs: Additional matplotlib arguments to pass for plotting KM curves.
+- **data:** A Pandas DataFrame containing time-to-event data.
+- **time_col:** Column name for the time data.
+- **event_col:** Column name for the event data (1 for event, 0 for censored).
+- **group_col:** Column name for the binary group data.
+- **group_labels:** Labels for the groups (default: None).
+- **title:** Title for the plot (default: None).
+- **y_label:** Label for the y-axis (default: 'Survival Probability').
+- **x_label:** Label for the x-axis (default: 'Time (months)').
+- **colors:** List of colors for the groups (default: ['r', 'b']). If more than two groups, please manually provide a list of colors.
+- **line_styles:** Line styles for the groups (default: ’-‘).
+- **fontsize:** Font size for text on KM curve including title, axis labels, and risk tables (default: 18).
+- **linewidth:** Line width of KM curves (default: 2.5).
+- **show_ci:** Whether to show confidence intervals on the KM curves (default: False).
+- **show_inverted_hr:** Whether to show inverted hazard ratio (default: False).
+- **survival_time_points:** One or more time point(s) at which to estimate percentage survival (default: None).
+- **return_summary:** Whether to return a summary of survival and hazard ratio statistics (default: False).
+- **savepath:** Complete path (including filename and extension) to save the KM curve plot (default: None).
+- **\*\*kwargs:** Additional matplotlib arguments to pass for plotting KM curves.
 
 #### \*Note:
 - PySurv uses a univariable Cox regression model on the 'group_col' variable to compute hazard ratios and p-values. 
@@ -93,24 +85,10 @@ Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and c
 - Under the proportional hazards assumption, Cox regression is equivalent, if not better, to the MH/log-rank method.
 - For more information, see [this](https://www.fharrell.com/post/logrank/) and [this](https://discourse.datamethods.org/t/when-is-log-rank-preferred-over-univariable-cox-regression/2344). 
 
-## ToDo
-- Clean up and organize the code
-- Support m-ary cases
-- Color risk tables below the KM curves
+## Maintained by
+Pushkar Mutha
+Email: pmutha@emory.edu
+LinkedIn: https://www.linkedin.com/in/pushkar-mutha/
 
-If you’d like to contribute to PySurv, here’s how you can help:
-
-1. Fork the repository.
-2. Create a new branch (git checkout -b feature/your-feature).
-3. Make your changes and commit them (git commit -am 'Add some feature').
-4. Push to the branch (git push origin feature/your-feature).
-5. Create a pull request.
-
-Please make sure to update tests as appropriate and follow the style guide used in the project.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## Disclaimer
-This code is still in the initial stages and may contain bugs. I make no guarantees for the accuracy of this code. By using this code, you agree to take full responsibility for any issues or inaccuracies that may arise.
+If you would like to request a new feature, please feel free to raise an issue or reach out via email. 
+If you found this code useful, you can support by leaving a star on [GitHub](https://github.com/pushkarmutha/PySurv).
