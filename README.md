@@ -90,4 +90,4 @@ Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and c
 - Email: pmutha@emory.edu
 - LinkedIn: https://www.linkedin.com/in/pushkar-mutha/
 
-If you would like to request a new feature, please feel free to raise an issue on [GitHub](https://github.com/pushkarmutha/PySurv)or reach out via email. If you found this code useful, you can support by leaving a star.
+If you would like to request a new feature, please feel free to raise an issue on [GitHub](https://github.com/pushkarmutha/PySurv) or reach out via email. If you found this code useful, you can support by leaving a star.
