@@ -86,9 +86,8 @@ Plots Kaplan-Meier survival curves and calculates hazard ratios, p-values, and c
 - For more information, see [this](https://www.fharrell.com/post/logrank/) and [this](https://discourse.datamethods.org/t/when-is-log-rank-preferred-over-univariable-cox-regression/2344). 
 
 ## Maintained by
-Pushkar Mutha
-Email: pmutha@emory.edu
-LinkedIn: https://www.linkedin.com/in/pushkar-mutha/
+- Pushkar Mutha
+- Email: pmutha@emory.edu
+- LinkedIn: https://www.linkedin.com/in/pushkar-mutha/
 
-If you would like to request a new feature, please feel free to raise an issue or reach out via email. 
-If you found this code useful, you can support by leaving a star on [GitHub](https://github.com/pushkarmutha/PySurv).
+If you would like to request a new feature, please feel free to raise an issue on [GitHub](https://github.com/pushkarmutha/PySurv)or reach out via email. If you found this code useful, you can support by leaving a star.
