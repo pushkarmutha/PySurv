@@ -1,4 +1,11 @@
 # PySurv
+[![PyPI - Python Version](https://img.shields.io/pypi/pyversions/pysurv)](https://github.com/pushkarmutha/PySurv)
+[![PyPI - Version](https://img.shields.io/pypi/v/pysurv)](https://pypi.org/project/pysurv/)
+[![PyPI - License](https://img.shields.io/pypi/l/pysurv)](https://github.com/pushkarmutha/PySurv/blob/main/LICENSE)
+[![PyPI Downloads Total](https://static.pepy.tech/badge/pysurv)](https://pepy.tech/projects/pysurv)
+[![PyPI Downloads Weekly](https://static.pepy.tech/badge/pysurv/week)](https://pepy.tech/projects/pysurv)
+[![GitHub Repo stars](https://img.shields.io/github/stars/pushkarmutha/PySurv)](https://github.com/pushkarmutha/PySurv/stargazers)
+
 
 [PySurv](https://github.com/pushkarmutha/PySurv) is a Python package for generating and plotting Kaplan-Meier survival curves. It is designed to be simple and intuitive and is inspired from [MatSurv](https://github.com/aebergl/MatSurv).
 
