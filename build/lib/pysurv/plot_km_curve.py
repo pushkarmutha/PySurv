@@ -67,10 +67,11 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     survival_summary: If return_summary=True, Pandas dataframe with median survival and % patients alive at specified timepoint
     hr_summary: If return_summary=True, Pandas dataframe with hazard ratio, confidence interval, p-value and test statistic
     """
-    if  data[group_col].nunique()!=2:
-        print('Please explicitly provide a list of "colors"')
-        
     groups = sorted(data[group_col].unique())
+    n_groups = len(groups)
+    if  n_groups != len(colors):
+        print(f'Please explicitly provide a list of {n_groups} "colors", equivalent to the number of groups.')
+        return
     
     if line_styles is None:
         line_styles = ['-'] * len(groups)
@@ -78,7 +79,8 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     if group_labels is None:
         group_labels = groups
 
-    plt.figure(figsize=(12, 8), facecolor='white')
+    fig_height = 8 + (n_groups * 0.5)  # Increase height slightly per group
+    plt.figure(figsize=(12, fig_height), facecolor='white')
     
     ax = plt.subplot(111)
     survival_percentages = []
@@ -101,39 +103,35 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
                 survival_percentages.append((group_labels[i], median_survival, survival_at_tps))
             else:
                 survival_percentages.append((group_labels[i], median_survival, *survival_at_tps))
-
-    hr = None
-    ci_lower = None
-    ci_upper = None
-    p_value = None
     
     # Fit Cox Proportional Hazards model to calculate hazard ratio and p-value
-    cph = CoxPHFitter()
-    cph.fit(data[[group_col, time_col, event_col]], duration_col=time_col, event_col=event_col)
-    hr = cph.hazard_ratios_[group_col]
-    ci_lower, ci_upper = np.exp(cph.confidence_intervals_.loc[group_col])
-    p_value = cph.summary.loc[group_col, 'p']
-    test_statistic = cph.summary.loc[group_col, 'z']
+    if n_groups==2:
+        cph = CoxPHFitter()
+        cph.fit(data[[group_col, time_col, event_col]], duration_col=time_col, event_col=event_col)
+        hr = cph.hazard_ratios_[group_col]
+        ci_lower, ci_upper = np.exp(cph.confidence_intervals_.loc[group_col])
+        p_value = cph.summary.loc[group_col, 'p']
+        test_statistic = cph.summary.loc[group_col, 'z']
 
-    if show_inverted_hr and hr is not None:
-        hr = 1 / hr
-        ci_lower_inv = 1 / ci_upper
-        ci_upper_inv = 1 / ci_lower
-        ci_lower = ci_lower_inv
-        ci_upper = ci_upper_inv
-    
-    if p_value < 0.0001:
-        p_value_exact = p_value.copy()
-        p_value = "p < 0.0001"
+        if show_inverted_hr:
+            hr = 1 / hr
+            ci_lower, ci_upper = 1 / ci_upper, 1 / ci_lower
+        
+        if p_value < 0.0001:
+            p_value_exact = p_value.copy()
+            p_value = "p < 0.0001"
+        else:
+            p_value_exact = p_value.copy()
+            p_value = "p = " + str(round(p_value, 4))
+
+        # Display hazard ratio, confidence interval, and p-value inside the plot near bottom left
+        plt.text(0.0125, 0.025, f"HR: {hr:.2f} ({ci_lower:.2f}-{ci_upper:.2f})\n{p_value}",
+                horizontalalignment='left', verticalalignment='bottom', transform=ax.transAxes, 
+                bbox=dict(facecolor='white', alpha=0.3, edgecolor='none'), fontsize=fontsize-2)
     else:
-        p_value_exact = p_value.copy()
-        p_value = str(round(p_value, 4))
+        print("Hazard ratio, confidence interval and p-value cannot be computed for more than 2 groups.")
+        print("Please manually compute the statistics using an appropriate coding for multi-group analysis. See https://stats.oarc.ucla.edu/spss/faq/coding-systems-for-categorical-variables-in-regression-analysis-2/ for details.")
 
-    # Display hazard ratio, confidence interval, and p-value inside the plot near bottom left
-    if hr is not None and ci_lower is not None and ci_upper is not None and p_value is not None:
-        plt.text(0.0125, 0.025, f"HR: {hr:.2f} ({ci_lower:.2f}-{ci_upper:.2f})\np-value: {p_value}",
-                 horizontalalignment='left', verticalalignment='bottom', transform=ax.transAxes, 
-                 bbox=dict(facecolor='white', alpha=0.3, edgecolor='none'), fontsize=fontsize-2)
     remove_spines(ax,['top', 'right'])
     plt.xlabel(x_label, fontsize=fontsize)
     plt.ylabel(y_label, fontsize=fontsize)
@@ -142,8 +140,8 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     plt.grid(False)
 
     plt.legend(fontsize=fontsize)
-    add_at_risk_counts(*kmfs, ax=ax, fontsize=fontsize)
-    plt.subplots_adjust(bottom=0.3)
+    add_at_risk_counts(*kmfs, ax=ax, fontsize=fontsize-2, ypos=-0.4-(0.1*n_groups))
+    plt.subplots_adjust(bottom=0.3 + (n_groups * 0.02))
     plt.tight_layout()
     if savepath is not None:
         plt.savefig(savepath, facecolor='white')
@@ -160,7 +158,7 @@ def plot_km_curve(data, time_col='time', event_col='event', group_col='group',
     print(survival_summary.round(2).to_string())
 
     # Print Hazard Ratio Summary
-    if hr is not None:
+    if n_groups == 2:
         print("\nHazard Ratio Summary:")
         print(f"Hazard ratio computed using Cox univariable regression on {group_col} variable")
         hr_summary = pd.DataFrame({
