@@ -8,3 +8,8 @@ PySurv.egg-info/requires.txt
 PySurv.egg-info/top_level.txt
 pysurv/__init__.py
 pysurv/plot_km_curve.py
+pysurv.egg-info/PKG-INFO
+pysurv.egg-info/SOURCES.txt
+pysurv.egg-info/dependency_links.txt
+pysurv.egg-info/requires.txt
+pysurv.egg-info/top_level.txt

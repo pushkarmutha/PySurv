@@ -1,6 +1,6 @@
 Metadata-Version: 2.1
-Name: PySurv
-Version: 1.0.0
+Name: pysurv
+Version: 1.0.1
 Summary: A Python package for plotting Kaplan-Meier survival curves.
 Home-page: https://github.com/pushkarmutha/PySurv
 Author: Pushkar Mutha
@@ -56,8 +56,8 @@ pysurv.plot_km_curve(
     event_col='event', 
     group_col='group', 
     group_labels=('Control Group', 'Treatment Group'),
-    title="Survival Analysis of Treatment vs Control",
-    y_label="Survival Probability (%)",
+    title="Kaplan-Meier Survival Curve",
+    y_label="Survival Probability",
     x_label="Time (months)",
     colors=['orange', 'blue'], 
     show_ci=True,

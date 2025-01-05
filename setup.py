@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
 
 setup(
-    name="PySurv",
-    version="1.0.0",
+    name="pysurv",
+    version="1.0.1",
     author="Pushkar Mutha",
     author_email="pushkar.mutha@outlook.com",
     description="A Python package for plotting Kaplan-Meier survival curves.",
